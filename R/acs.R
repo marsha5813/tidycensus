@@ -50,6 +50,9 @@
 #'   useful in debugging and determining if error messages returned are due to
 #'   tidycensus or the Census API. Copy to the API call into a browser and see
 #'   what is returned by the API directly. Defaults to FALSE.
+#' @param missing_annotations if TRUE, allow retrieved data to contain Census
+#'   standard missing value annotations (e.g., -999999999). If FALSE, these
+#'   values are returned as NA. Defaults to FALSE.
 #' @param ... Other keyword arguments
 #'
 #' @return A tibble or sf tibble of ACS data
@@ -88,7 +91,8 @@ get_acs <- function(geography, variables = NULL, table = NULL, cache_table = FAL
                     state = NULL, county = NULL, zcta = NULL,
                     geometry = FALSE, keep_geo_vars = FALSE,
                     shift_geo = FALSE, summary_var = NULL, key = NULL,
-                    moe_level = 90, survey = "acs5", show_call = FALSE, ...) {
+                    moe_level = 90, survey = "acs5", show_call = FALSE,
+                    missing_annotations = FALSE, ...) {
 
   if (survey == "acs1") {
     message(sprintf("Getting data from the %s 1-year ACS", year))
@@ -707,15 +711,17 @@ get_acs <- function(geography, variables = NULL, table = NULL, cache_table = FAL
     }
 
     # Convert missing values to NA
-    dat2[dat2 == -111111111] <- NA
-    dat2[dat2 == -222222222] <- NA
-    dat2[dat2 == -333333333] <- NA
-    dat2[dat2 == -444444444] <- NA
-    dat2[dat2 == -555555555] <- NA
-    dat2[dat2 == -666666666] <- NA
-    dat2[dat2 == -777777777] <- NA
-    dat2[dat2 == -888888888] <- NA
-    dat2[dat2 == -999999999] <- NA
+    if (missing_annotations == FALSE){
+      dat2[dat2 == -111111111] <- NA
+      dat2[dat2 == -222222222] <- NA
+      dat2[dat2 == -333333333] <- NA
+      dat2[dat2 == -444444444] <- NA
+      dat2[dat2 == -555555555] <- NA
+      dat2[dat2 == -666666666] <- NA
+      dat2[dat2 == -777777777] <- NA
+      dat2[dat2 == -888888888] <- NA
+      dat2[dat2 == -999999999] <- NA
+    }
 
     if ("moe" %in% names(dat2)) {
       dat2 <- mutate(dat2, moe = moe * moe_factor)
@@ -739,15 +745,17 @@ get_acs <- function(geography, variables = NULL, table = NULL, cache_table = FAL
 
 
     # Convert missing values to NA
-    dat[dat == -111111111] <- NA
-    dat[dat == -222222222] <- NA
-    dat[dat == -333333333] <- NA
-    dat[dat == -444444444] <- NA
-    dat[dat == -555555555] <- NA
-    dat[dat == -666666666] <- NA
-    dat[dat == -777777777] <- NA
-    dat[dat == -888888888] <- NA
-    dat[dat == -999999999] <- NA
+    if (missing_annotations == FALSE){
+      dat2[dat2 == -111111111] <- NA
+      dat2[dat2 == -222222222] <- NA
+      dat2[dat2 == -333333333] <- NA
+      dat2[dat2 == -444444444] <- NA
+      dat2[dat2 == -555555555] <- NA
+      dat2[dat2 == -666666666] <- NA
+      dat2[dat2 == -777777777] <- NA
+      dat2[dat2 == -888888888] <- NA
+      dat2[dat2 == -999999999] <- NA
+    }
 
     # Find MOE vars
     # moe_vars <- grep("*M", names(dat))
@@ -809,15 +817,17 @@ get_acs <- function(geography, variables = NULL, table = NULL, cache_table = FAL
       mutate(summary_moe = round(summary_moe * moe_factor, 0))
 
     # Convert missing values to NA
-    dat2[dat2 == -111111111] <- NA
-    dat2[dat2 == -222222222] <- NA
-    dat2[dat2 == -333333333] <- NA
-    dat2[dat2 == -444444444] <- NA
-    dat2[dat2 == -555555555] <- NA
-    dat2[dat2 == -666666666] <- NA
-    dat2[dat2 == -777777777] <- NA
-    dat2[dat2 == -888888888] <- NA
-    dat2[dat2 == -999999999] <- NA
+    if (missing_annotations == FALSE){
+      dat2[dat2 == -111111111] <- NA
+      dat2[dat2 == -222222222] <- NA
+      dat2[dat2 == -333333333] <- NA
+      dat2[dat2 == -444444444] <- NA
+      dat2[dat2 == -555555555] <- NA
+      dat2[dat2 == -666666666] <- NA
+      dat2[dat2 == -777777777] <- NA
+      dat2[dat2 == -888888888] <- NA
+      dat2[dat2 == -999999999] <- NA
+    }
   }
 
 

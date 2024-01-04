@@ -44,6 +44,9 @@
 #'                  in debugging and determining if error messages returned are
 #'                  due to tidycensus or the Census API. Copy to the API call into
 #'                  a browser and see what is returned by the API directly. Defaults to FALSE.
+#' @param missing_annotations if TRUE, allow retrieved data to contain Census
+#'                            standard missing value annotations (e.g., -999999999). If FALSE, these
+#'                            values are returned as NA. Defaults to FALSE.#' @param ... Other keyword arguments
 #' @param ... Other keyword arguments
 #'
 #' @return a tibble or sf tibble of decennial Census data
@@ -83,6 +86,7 @@ get_decennial <- function(geography,
                           pop_group_label = FALSE,
                           key = NULL,
                           show_call = FALSE,
+                          missing_annotations = FALSE,
                           ...
                           ) {
 
@@ -383,15 +387,17 @@ get_decennial <- function(geography,
     }
 
     # Convert missing values to NA
-    dat2[dat2 == -111111111] <- NA
-    dat2[dat2 == -222222222] <- NA
-    dat2[dat2 == -333333333] <- NA
-    dat2[dat2 == -444444444] <- NA
-    dat2[dat2 == -555555555] <- NA
-    dat2[dat2 == -666666666] <- NA
-    dat2[dat2 == -777777777] <- NA
-    dat2[dat2 == -888888888] <- NA
-    dat2[dat2 == -999999999] <- NA
+    if (missing_annotations == FALSE){
+      dat2[dat2 == -111111111] <- NA
+      dat2[dat2 == -222222222] <- NA
+      dat2[dat2 == -333333333] <- NA
+      dat2[dat2 == -444444444] <- NA
+      dat2[dat2 == -555555555] <- NA
+      dat2[dat2 == -666666666] <- NA
+      dat2[dat2 == -777777777] <- NA
+      dat2[dat2 == -888888888] <- NA
+      dat2[dat2 == -999999999] <- NA
+    }
 
   } else if (output == "wide") {
 
@@ -406,15 +412,17 @@ get_decennial <- function(geography,
     }
 
     # Convert missing values to NA
-    dat2[dat2 == -111111111] <- NA
-    dat2[dat2 == -222222222] <- NA
-    dat2[dat2 == -333333333] <- NA
-    dat2[dat2 == -444444444] <- NA
-    dat2[dat2 == -555555555] <- NA
-    dat2[dat2 == -666666666] <- NA
-    dat2[dat2 == -777777777] <- NA
-    dat2[dat2 == -888888888] <- NA
-    dat2[dat2 == -999999999] <- NA
+    if (missing_annotations == FALSE){
+      dat2[dat2 == -111111111] <- NA
+      dat2[dat2 == -222222222] <- NA
+      dat2[dat2 == -333333333] <- NA
+      dat2[dat2 == -444444444] <- NA
+      dat2[dat2 == -555555555] <- NA
+      dat2[dat2 == -666666666] <- NA
+      dat2[dat2 == -777777777] <- NA
+      dat2[dat2 == -888888888] <- NA
+      dat2[dat2 == -999999999] <- NA
+    }
 
     if ("POPGROUP" %in% names(dat2)) {
       dat2 <- dat2 %>%
